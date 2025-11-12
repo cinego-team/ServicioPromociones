@@ -1,15 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn,OneToMany, BaseEntity } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, BaseEntity } from "typeorm";
 import { Promocion } from "./promocion.entity";
 
-@Entity('Dias')
+@Entity('dias')
 export class Dia extends BaseEntity {
- 
-  @PrimaryGeneratedColumn()
-  id: number;
 
-  @Column()
-  nombre: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-@OneToMany(() => Promocion, promocion => promocion.dia)
-promocion: Promocion[];
+    @Column()
+    nombre: string;
+
+    @OneToMany(() => Promocion, promocion => promocion.dia)
+    promocion: Promocion[];
 }

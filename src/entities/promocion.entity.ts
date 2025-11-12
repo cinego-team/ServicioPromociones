@@ -1,26 +1,26 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 //import { TipoClienteEntity } from "./tipoCliente.entity";
-import {Dia} from   "./dia.entity"
+import { Dia } from "./dia.entity"
 
-@Entity('Promociones')
+@Entity('promociones')
 export class Promocion extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  nombre: string;
+    @Column()
+    nombre: string;
 
-  @Column()
-  porcentajeDescuento: number;
+    @Column({ name: 'porcentaje_descuento' })
+    porcentajeDescuento: number;
 
-   // ID tipo de cliente
-  @Column({ type: 'int', nullable: false })
-  tipoClienteId: number;
+    // ID tipo de cliente
+    @Column({ type: 'int', nullable: false, name: 'tipo_cliente_id' })
+    tipoClienteId: number;
 
-   // Relación con los días
- @ManyToOne(() => Dia, dia => dia.promocion)
-  @JoinColumn({name: 'diaID'})
-  dia: Dia;
+    // Relación con los días
+    @ManyToOne(() => Dia, dia => dia.promocion)
+    @JoinColumn({ name: 'dia_id' })
+    dia: Dia;
 
 }
