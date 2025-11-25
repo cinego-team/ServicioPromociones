@@ -3,12 +3,12 @@ import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGe
 //import { TipoClienteEntity } from "./tipoCliente.entity";
 import { Dia } from "./dia.entity"
 
-@Entity('promociones')
+@Entity('promocion')
 export class Promocion extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ type: 'varchar', length: 100 })
     nombre: string;
 
     @Column({ name: 'porcentaje_descuento' })

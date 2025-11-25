@@ -7,7 +7,7 @@ export class Dia extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ type: 'varchar', length: 10 })
     nombre: string;
 
     @OneToMany(() => Promocion, promocion => promocion.dia)
