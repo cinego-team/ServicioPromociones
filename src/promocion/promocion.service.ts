@@ -15,22 +15,7 @@ export class PromocionService {
     private readonly promocionRepo: Repository<Promocion>,
     @InjectRepository(Dia) private readonly diaRepo: Repository<Dia>,
   ) {}
-  private toResponse(p: Promocion): PromocionOutput {
-    return {
-      id: p.id,
-      nombre: p.nombre,
-      dia: p.dia.nombre,
-      porcentajeDescuento: p.porcentajeDescuento,
-      tipoClienteId: p.tipoClienteId,
-    };
-  }
-  private async resolveRelations(dto: PromocionInput) {
-    const dia = await Promise.all([
-      this.diaRepo.findOne({ where: { nombre: dto.dia } }),
-    ]);
-    if (!dia) throw new Error('404 Dia not found.');
-    return { dia };
-  }
+
   async nuevaPromocion(dato: PromocionInput): Promise<PromocionOutput> {
     const constTipoCliente: number = await axiosAPIUsuarios.get(
       config.APIUsuariosUrls.validarTipoCliente(dato.tipoClienteId),
