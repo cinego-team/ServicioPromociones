@@ -6,15 +6,31 @@ import { Promocion } from '../entities/promocion.entity';
 import { PromocionInput, PromocionOutput, PromocionMayorDTO } from './dto';
 import { axiosAPIUsuarios } from '../axios_service/axios.client';
 import { config } from '../axios_service/env';
+import { Dia } from 'src/entities/dia.entity';
 
 @Injectable()
 export class PromocionService {
-  diaRepo: any;
   constructor(
     @InjectRepository(Promocion)
     private readonly promocionRepo: Repository<Promocion>,
+    @InjectRepository(Dia) private readonly diaRepo: Repository<Dia>,
   ) {}
-
+  private toResponse(p: Promocion): PromocionOutput {
+    return {
+      id: p.id,
+      nombre: p.nombre,
+      dia: p.dia.nombre,
+      porcentajeDescuento: p.porcentajeDescuento,
+      tipoClienteId: p.tipoClienteId,
+    };
+  }
+  private async resolveRelations(dto: PromocionInput) {
+    const dia = await Promise.all([
+      this.diaRepo.findOne({ where: { nombre: dto.dia } }),
+    ]);
+    if (!dia) throw new Error('404 Dia not found.');
+    return { dia };
+  }
   async nuevaPromocion(dato: PromocionInput): Promise<PromocionOutput> {
     const constTipoCliente: number = await axiosAPIUsuarios.get(
       config.APIUsuariosUrls.validarTipoCliente(dato.tipoClienteId),
@@ -24,7 +40,9 @@ export class PromocionService {
         `Tipo de cliente con id ${dato.tipoClienteId} no válido`,
       );
     }
-    const constDia = await this.diaRepo.findOne({ where: { id: dato.diaId } });
+    const constDia = await this.diaRepo.findOne({
+      where: { nombre: dato.dia },
+    });
     if (!constDia) {
       throw new BadRequestException('Día no encontrado');
     }
@@ -40,7 +58,7 @@ export class PromocionService {
       nombre: nuevaPromocion.nombre,
       porcentajeDescuento: nuevaPromocion.porcentajeDescuento,
       tipoClienteId: nuevaPromocion.tipoClienteId,
-      diaId: nuevaPromocion.dia.id,
+      dia: nuevaPromocion.dia.nombre,
     };
     return response;
   }
@@ -62,7 +80,7 @@ export class PromocionService {
       nombre: promocion.nombre,
       porcentajeDescuento: promocion.porcentajeDescuento,
       tipoClienteId: promocion.tipoClienteId,
-      diaId: promocion.dia.id,
+      dia: promocion.dia.nombre,
     }));
   }
   async getPromocionById(id: number): Promise<PromocionOutput> {
@@ -78,7 +96,7 @@ export class PromocionService {
       nombre: constPromocion.nombre,
       porcentajeDescuento: constPromocion.porcentajeDescuento,
       tipoClienteId: constPromocion.tipoClienteId,
-      diaId: constPromocion.dia.id,
+      dia: constPromocion.dia.nombre,
     };
   }
   async updatePromocion(
@@ -87,7 +105,9 @@ export class PromocionService {
   ): Promise<PromocionOutput> {
     const constPromo = await this.promocionRepo.findOne({ where: { id } });
     if (!constPromo) throw new Error('404 Promocion not found.');
-    const constDia = await this.diaRepo.findOne({ where: { id: datos.diaId } });
+    const constDia = await this.diaRepo.findOne({
+      where: { nombre: datos.dia },
+    });
     if (!constDia) throw new Error('404 Dia not found.');
     constPromo.nombre = datos.nombre;
     constPromo.porcentajeDescuento = datos.porcentajeDescuento;
@@ -104,46 +124,11 @@ export class PromocionService {
       nombre: constPromo.nombre,
       porcentajeDescuento: constPromo.porcentajeDescuento,
       tipoClienteId: constPromo.tipoClienteId,
-      diaId: constPromo.dia.id,
+      dia: constPromo.dia.nombre,
     };
     return response;
   }
-  //no se como meter lo de validar tipo cliente
-  async updateParcialPromocion(
-    id: number,
-    datos: Partial<PromocionInput>,
-  ): Promise<PromocionOutput> {
-    const constPromo = await this.promocionRepo.findOne({ where: { id } });
-    if (!constPromo) throw new Error('404 Promocion not found.');
-    if (datos.diaId) {
-      const constDia = await this.diaRepo.findOne({
-        where: { id: datos.diaId },
-      });
-      if (!constDia) throw new Error('404 Dia not found.');
-      constPromo.dia = constDia;
-    }
 
-    if (datos.nombre) constPromo.nombre = datos.nombre;
-    if (datos.porcentajeDescuento)
-      constPromo.porcentajeDescuento = datos.porcentajeDescuento;
-    if (datos.tipoClienteId) constPromo.tipoClienteId = datos.tipoClienteId;
-
-    await this.promocionRepo.save(constPromo);
-    const updatedPromo = await this.promocionRepo.findOne({
-      where: { id },
-      relations: { dia: true },
-    });
-    if (!updatedPromo) throw new Error('404 Promocion not found after update.');
-
-    const response: PromocionOutput = {
-      id: updatedPromo.id,
-      nombre: updatedPromo.nombre,
-      porcentajeDescuento: updatedPromo.porcentajeDescuento,
-      tipoClienteId: updatedPromo.tipoClienteId,
-      diaId: updatedPromo.dia.id,
-    };
-    return response;
-  }
   async deletePromocionById(id: number): Promise<{ message: string }> {
     const constPromo = await this.promocionRepo.findOne({
       where: { id },

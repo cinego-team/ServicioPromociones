@@ -30,26 +30,22 @@ export class PromocionController {
   ) {
     return this.promocionService.getAllPromociones(+page, +quantity);
   }
-  /*
-    @Get(':id')
-     getPromocionById(@Param("id") id: number) {
-          return this.promocionService.getPromocionById(id);
-      }
-    @Put("edit/:id")
-      updatePromocion(
-          @Param("id") id: number, @Body() promocion: PromocionInput ) {
-          return this.promocionService.updatePromocion(id, promocion);
-      }
-    @Patch("edit/:id")
-      updateParcialPromocion(
-          @Param("id") id: number, @Body() promocion: Partial<PromocionInput> ) {
-          return this.promocionService.updateParcialPromocion(id, promocion);
-      }
-     @Delete(":id")
-      deletePromocionById(@Param("id") id: number) {
-          return this.promocionService.deletePromocionById(id);
-      }
-  */
+
+  @Get(':id')
+  getPromocionById(@Param('id') id: number) {
+    return this.promocionService.getPromocionById(id);
+  }
+
+  @Put('edit/:id')
+  updatePromocion(@Param('id') id: number, @Body() promocion: PromocionInput) {
+    return this.promocionService.updatePromocion(id, promocion);
+  }
+
+  @Delete(':id')
+  deletePromocionById(@Param('id') id: number) {
+    return this.promocionService.deletePromocionById(id);
+  }
+
   @Get('verificar-promocion/:id')
   verificarPromocion(@Param('id') id: number) {
     return this.promocionService.verificarPromocionById(user.id);

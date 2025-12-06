@@ -1,7 +1,7 @@
 export class PromocionInput {
   nombre: string;
   porcentajeDescuento: number;
-  diaId: number;
+  dia: string;
   tipoClienteId: number;
 }
 export class PromocionOutput {
@@ -9,7 +9,7 @@ export class PromocionOutput {
   nombre: string;
   porcentajeDescuento: number;
   tipoClienteId: number;
-  diaId: number;
+  dia: string;
 }
 export class PromocionMayorDTO {
   id: number;
