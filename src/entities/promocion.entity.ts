@@ -25,7 +25,7 @@ export class Promocion extends BaseEntity {
   @Column({ type: 'int', nullable: false })
   tipoClienteId: number;
 
-  // Relación con los días
-  @ManyToOne(() => Dia, (dia) => dia.promocion)
+  @ManyToOne(() => Dia, (dia) => dia.promocion, { nullable: false })
+  @JoinColumn({ name: 'dia_id' })
   dia: Dia;
 }

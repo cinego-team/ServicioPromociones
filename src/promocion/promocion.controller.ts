@@ -18,17 +18,17 @@ export class PromocionController {
     this.promocionService = promocionService;
   }
 
-  @Post()
+  @Post('new')
   create(@Body() dato: PromocionInput) {
     return this.promocionService.nuevaPromocion(dato);
   }
 
-  @Get()
+  @Get('admin/all')
   getAllPromociones(
     @Query('page') page: number = 1,
     @Query('quantity') quantity: number = 10,
   ) {
-    return this.promocionService.getAllPromociones(+page, +quantity);
+    return this.promocionService.getPromociones(+page, +quantity);
   }
 
   @Get(':id')
@@ -36,12 +36,12 @@ export class PromocionController {
     return this.promocionService.getPromocionById(id);
   }
 
-  @Put('edit/:id')
+  @Put('edit/:id/admin')
   updatePromocion(@Param('id') id: number, @Body() promocion: PromocionInput) {
     return this.promocionService.updatePromocion(id, promocion);
   }
 
-  @Delete(':id')
+  @Delete(':id/admin')
   deletePromocionById(@Param('id') id: number) {
     return this.promocionService.deletePromocionById(id);
   }
