@@ -20,7 +20,7 @@ export class DiaController {
   create(@Body() dato: DiaInput) {
     return this.diaService.create(dato);
   }
-  @Get()
+  @Get('admin/all')
   findAllDia() {
     return this.diaService.findAll();
   }
@@ -37,7 +37,7 @@ export class DiaController {
   deleteDia(@Param('id') id: number) {
     return this.diaService.deleteDiaById(id);
   }
-  @Get('admmin/find')
+  @Get('admin/find/:id')
   findDiaById(@Param('id') id: number) {
     return this.diaService.findDiaById(id);
   }

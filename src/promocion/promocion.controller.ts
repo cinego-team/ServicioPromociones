@@ -18,7 +18,7 @@ export class PromocionController {
     this.promocionService = promocionService;
   }
 
-  @Post('new')
+  @Post('admin/new')
   create(@Body() dato: PromocionInput) {
     return this.promocionService.nuevaPromocion(dato);
   }
@@ -31,17 +31,17 @@ export class PromocionController {
     return this.promocionService.getPromociones(+page, +quantity);
   }
 
-  @Get(':id')
+  @Get('admin/:id')
   getPromocionById(@Param('id') id: number) {
     return this.promocionService.getPromocionById(id);
   }
 
-  @Put('edit/:id/admin')
+  @Put('admin/:id')
   updatePromocion(@Param('id') id: number, @Body() promocion: PromocionInput) {
     return this.promocionService.updatePromocion(id, promocion);
   }
 
-  @Delete(':id/admin')
+  @Delete('admin/:id')
   deletePromocionById(@Param('id') id: number) {
     return this.promocionService.deletePromocionById(id);
   }
