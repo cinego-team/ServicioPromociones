@@ -16,7 +16,7 @@ export class DiaController {
   constructor(private readonly diaService: DiaService) {
     this.diaService = diaService;
   }
-  @Post()
+  @Post('admin/new')
   create(@Body() dato: DiaInput) {
     return this.diaService.create(dato);
   }
@@ -24,7 +24,7 @@ export class DiaController {
   findAllDia() {
     return this.diaService.findAll();
   }
-  @Get(':id')
+  @Get('admin/:id')
   getDiaById(@Param('id') id: number) {
     return this.diaService.getDiaById(id);
   }
@@ -33,7 +33,7 @@ export class DiaController {
     return this.diaService.updateDia(id, dia);
   }
   //patch por ver porque solo es un campo
-  @Delete(':id')
+  @Delete('admin/:id')
   deleteDia(@Param('id') id: number) {
     return this.diaService.deleteDiaById(id);
   }
