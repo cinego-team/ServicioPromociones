@@ -49,7 +49,11 @@ export class PromocionController {
     }
 
     @Get('verificar-promocion')
-    verificarPromocion(@Req() req: RequestWithUser) {
-        return this.promocionService.verificarPromocionById(req.user.id);
+        verificarPromocion(@Query('clienteId') clienteId: string) {
+            // Validamos que el ID llegue para evitar nuevos errores
+            if (!clienteId) {
+                throw new Error('El clienteId es requerido para verificar promociones');
+            }
+            return this.promocionService.verificarPromocionById(+clienteId);
     }
 }
