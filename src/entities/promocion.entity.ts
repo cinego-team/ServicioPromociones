@@ -22,7 +22,7 @@ export class Promocion extends BaseEntity {
   porcentajeDescuento: number;
 
   // ID tipo de cliente
-  @Column({ type: 'int', nullable: false })
+  @Column({ name: 'tipo_cliente_id', type: 'int', nullable: false })
   tipoClienteId: number;
 
   @ManyToOne(() => Dia, (dia) => dia.promocion, { nullable: false })
