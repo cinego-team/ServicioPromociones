@@ -58,7 +58,7 @@ export class PromocionService {
 
   async getPromociones(
     page: number,
-    quantity: number,
+    quantity: number, token: string
   ): Promise<PromocionOutputAdmin[]> {
     const skip = (page - 1) * quantity;
     const promociones = await this.promocionRepo.find({
@@ -73,8 +73,11 @@ export class PromocionService {
         const datosCliente = (
           await axiosAPIUsuarios.get(
             config.APIUsuariosUrls.getTipoClienteById(promocion.tipoClienteId),
+            { headers: { Authorization: token } }
           )
         ).data;
+
+        
 
         return {
           id: promocion.id,
@@ -108,10 +111,7 @@ export class PromocionService {
       diaId: constPromocion.dia.id,
     };
   }
-  async updatePromocion(
-    id: number,
-    datos: PromocionInput,
-  ): Promise<PromocionOutput> {
+  async updatePromocion(id: number, datos: PromocionInput, token: string): Promise<PromocionOutput> {
     const promo = await this.promocionRepo.findOne({
       where: { id },
       relations: { dia: true },
@@ -125,8 +125,13 @@ export class PromocionService {
       throw new BadRequestException('Día no encontrado');
     }
     const { data: tipoClienteValido } = await axiosAPIUsuarios.get<boolean>(
-      config.APIUsuariosUrls.validarTipoCliente(datos.tipoClienteId),
-    );
+    config.APIUsuariosUrls.validarTipoCliente(datos.tipoClienteId),
+    {
+      headers: {
+        Authorization: token,  // Pasar el token
+      },
+    },
+  );
     if (!tipoClienteValido) {
       throw new BadRequestException(
         `Tipo de cliente con id ${datos.tipoClienteId} no válido`,

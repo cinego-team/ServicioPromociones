@@ -9,6 +9,7 @@ import {
     Param,
     Query,
     Req,
+    Headers,
 } from '@nestjs/common';
 import { PromocionService } from './promocion.service';
 import { PromocionInput } from './dto';
@@ -29,8 +30,9 @@ export class PromocionController {
     getAllPromociones(
         @Query('page') page: number = 1,
         @Query('quantity') quantity: number = 10,
+        @Headers('authorization') token: string
     ) {
-        return this.promocionService.getPromociones(+page, +quantity);
+        return this.promocionService.getPromociones(+page, +quantity, token);
     }
 
     @Get('admin/:id')
@@ -39,8 +41,12 @@ export class PromocionController {
     }
 
     @Put('admin/:id')
-    updatePromocion(@Param('id') id: number, @Body() promocion: PromocionInput) {
-        return this.promocionService.updatePromocion(id, promocion);
+    async update(
+    @Param('id') id: number,
+    @Body() datos: PromocionInput,
+    @Headers('authorization') token: string,  // Extraer el token del header
+    ) {
+    return this.promocionService.updatePromocion(id, datos, token);
     }
 
     @Delete('admin/:id')
@@ -56,4 +62,5 @@ export class PromocionController {
             }
             return this.promocionService.verificarPromocionById(+clienteId);
     }
+
 }
