@@ -26,9 +26,10 @@ export class PromocionService {
     private readonly diaService: DiaService,
   ) {}
 
-  async nuevaPromocion(dato: PromocionInput): Promise<PromocionOutput> {
-    const constTipoCliente: number = await axiosAPIUsuarios.get(
+  async nuevaPromocion(dato: PromocionInput, token: string): Promise<PromocionOutput> {
+    const { data: constTipoCliente } = await axiosAPIUsuarios.get(
       config.APIUsuariosUrls.validarTipoCliente(dato.tipoClienteId),
+      { headers: { Authorization: token } }  
     );
     if (!constTipoCliente) {
       throw new BadRequestException(

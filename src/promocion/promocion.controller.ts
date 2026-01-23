@@ -22,8 +22,11 @@ export class PromocionController {
     }
 
     @Post('admin/new')
-    create(@Body() dato: PromocionInput) {
-        return this.promocionService.nuevaPromocion(dato);
+    create(
+        @Body() dato: PromocionInput,
+        @Headers('authorization') token: string  // Agregar
+    ) {
+        return this.promocionService.nuevaPromocion(dato, token);  // Pasar token
     }
 
     @Get('admin/all')
