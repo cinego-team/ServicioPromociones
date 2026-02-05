@@ -14,7 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
             url: process.env.PG_MSPROMOCIONES,
             ssl: { rejectUnauthorized: false },
             autoLoadEntities: true,
-            synchronize: false,
+            synchronize: true,
             entities: [Promocion, Dia],
         }),
         PromocionModule,
