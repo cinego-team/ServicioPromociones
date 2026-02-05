@@ -8,21 +8,19 @@ import { Dia } from './entities/dia.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      database: 'mspromociones',
-      username: 'postgres',
-      password: 'grupou',
-      synchronize: true,
-      entities: [Promocion, Dia],
-    }),
-    PromocionModule,
-    DiaModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        TypeOrmModule.forRoot({
+            type: 'postgres',
+            url: process.env.PG_MSPROMOCIONES,
+            ssl: { rejectUnauthorized: false },
+            autoLoadEntities: true,
+            synchronize: false,
+            entities: [Promocion, Dia],
+        }),
+        PromocionModule,
+        DiaModule,
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
