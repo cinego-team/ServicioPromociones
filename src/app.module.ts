@@ -10,10 +10,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
     imports: [
         TypeOrmModule.forRoot({
-            type: 'postgres',
-            url: process.env.PG_MSPROMOCIONES,
-            ssl: { rejectUnauthorized: false },
-            autoLoadEntities: true,
+            port: +process.env.PUERTO_BD!,
+            database: process.env.PG_DATABASE_MS_USUARIOS,
+            username: process.env.PG_USERNAME,
+            password: process.env.PG_PASSWORD,
             synchronize: true,
             entities: [Promocion, Dia],
         }),
