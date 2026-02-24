@@ -45,11 +45,11 @@ export class PromocionController {
 
     @Put('admin/:id')
     async update(
-    @Param('id') id: number,
-    @Body() datos: PromocionInput,
-    @Headers('authorization') token: string,  // Extraer el token del header
+        @Param('id') id: number,
+        @Body() datos: PromocionInput,
+        @Headers('authorization') token: string,  // Extraer el token del header
     ) {
-    return this.promocionService.updatePromocion(id, datos, token);
+        return this.promocionService.updatePromocion(id, datos, token);
     }
 
     @Delete('admin/:id')
@@ -57,13 +57,10 @@ export class PromocionController {
         return this.promocionService.deletePromocionById(id);
     }
 
-    @Get('verificar-promocion')
-        verificarPromocion(@Query('clienteId') clienteId: string) {
-            // Validamos que el ID llegue para evitar nuevos errores
-            if (!clienteId) {
-                throw new Error('El clienteId es requerido para verificar promociones');
-            }
-            return this.promocionService.verificarPromocionById(+clienteId);
+    @Get('verificar-promocion/:id')
+    verificarPromocion(@Param('id') id: number) {
+        // Validamos que el ID llegue para evitar nuevos errores
+        return this.promocionService.verificarPromocionById(id);
     }
 
 }
