@@ -10,6 +10,7 @@ export class DiaService {
     @InjectRepository(Dia)
     private diaRepo: Repository<Dia>,
   ) {}
+  /* metodos CRUD*/
   async create(datos: DiaInput): Promise<DiaResponse> {
     const dia = this.diaRepo.create({ nombre: datos.nombre });
     await this.diaRepo.save(dia);

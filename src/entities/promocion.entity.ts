@@ -21,7 +21,6 @@ export class Promocion extends BaseEntity {
   @Column({ name: 'porcentaje_descuento' })
   porcentajeDescuento: number;
 
-  // ID tipo de cliente
   @Column({ name: 'tipo_cliente_id', type: 'int', nullable: false })
   tipoClienteId: number;
 

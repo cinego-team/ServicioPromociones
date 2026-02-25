@@ -32,7 +32,6 @@ export class DiaController {
   updateDia(@Param('id') id: number, @Body() dia: DiaInput) {
     return this.diaService.updateDia(id, dia);
   }
-  //patch por ver porque solo es un campo
   @Delete('admin/:id')
   deleteDia(@Param('id') id: number) {
     return this.diaService.deleteDiaById(id);
